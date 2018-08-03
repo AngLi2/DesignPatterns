@@ -3,14 +3,6 @@
  */
 package chainofresponsibility.def;
 
-import java.util.logging.Level;
-
-import javax.xml.ws.Response;
-
-import org.omg.CORBA.Request;
-
-import proxy.def.dynamic.Advice;
-
 /**
  * @author Ang Li
  *
@@ -21,7 +13,16 @@ public abstract class Handler {
 	
 	public final Response handleMessage(Request request) {
 		Response response = null;
-		if(this.)
+		if(this.getHandlerLevel().equals(request.getRequestLevel())) {
+			response = this.echo(request);
+		}else {
+			if(this.nextHandler != null) {
+				response = this.nextHandler.handleMessage(request);
+			}else {
+				
+			}
+		}
+		return response;
 	}
 	
 	public void setNext(Handler handler) {
